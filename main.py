@@ -3,19 +3,19 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
 import os
-
+# Constants : internet speed, twitter credentials
 PROMISED = 150
 EMAIL = os.environ.get("email")
 PASSWORD = os.environ.get("pass")
 USERNAME = os.environ.get("username")
 
-
+# creating a class for Auto tweet bot
 class InternetSpeedTwitterBot:
     def __init__(self):
         self.up = None
         self.down = None
         self.driver = webdriver.Firefox()
-
+# To find current internet speed
     def get_internet_speed(self):
         self.driver.get("https://www.speedtest.net/")
         time.sleep(6)
@@ -24,7 +24,7 @@ class InternetSpeedTwitterBot:
         self.down = float(self.driver.find_element(By.CLASS_NAME, "download-speed").text)
         self.up = float(self.driver.find_element(By.CLASS_NAME, "upload-speed").text)
         return {"down": self.down, "up": self.up}
-
+# To make a tweet with current internet speed
     def tweet_at_provider(self, text):
         self.driver.get("https://twitter.com/")
         time.sleep(6)
@@ -38,12 +38,13 @@ class InternetSpeedTwitterBot:
         user_pass.send_keys(PASSWORD)
         user_pass.send_keys(Keys.ENTER)
         time.sleep(6)
+        # Typing the text and posting
         self.driver.find_element(By.CSS_SELECTOR, '.public-DraftStyleDefault-block').click()
         input_box = self.driver.switch_to.active_element
         input_box.send_keys(text)
         self.driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div[2]/main/div/div/div/div[1]/div/div[3]/div/div[2]/div[1]/div/div/div/div[2]/div[3]/div/div/div[2]/div[3]/div').click()
 
-
+# main coding area, calling functions
 tweet_bot = InternetSpeedTwitterBot()
 speed = tweet_bot.get_internet_speed()
 print(speed)
